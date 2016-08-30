@@ -15,7 +15,7 @@ public class ItemBase extends Item
     {
         this.setCreativeTab(AdvancedSystemsManager.creativeTab);
         this.setUnlocalizedName(name);
-        this.setTextureName(Reference.RESOURCE_LOCATION + ":" + name.replace(Names.PREFIX, ""));
+//        this.setTextureName(Reference.RESOURCE_LOCATION + ":" + name.replace(Names.PREFIX, ""));
         this.setMaxStackSize(1);
     }
 }

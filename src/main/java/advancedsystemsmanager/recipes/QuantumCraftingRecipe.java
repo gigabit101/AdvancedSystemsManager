@@ -28,10 +28,10 @@ public class QuantumCraftingRecipe implements IRecipe
                 {
                     if (hasCable) return false;
                     else hasCable = true;
-                } else if (item.getItem() == Items.ender_pearl)
+                } else if (item.getItem() == Items.ENDER_PEARL)
                 {
                     enderPearl++;
-                } else if (item.getItem() == Items.ender_eye)
+                } else if (item.getItem() == Items.ENDER_EYE)
                 {
                     enderEye++;
                 } else
@@ -60,10 +60,10 @@ public class QuantumCraftingRecipe implements IRecipe
                 {
                     if (hasCable) return null;
                     else hasCable = true;
-                } else if (item.getItem() == Items.ender_pearl)
+                } else if (item.getItem() == Items.ENDER_PEARL)
                 {
                     enderPearl++;
-                } else if (item.getItem() == Items.ender_eye)
+                } else if (item.getItem() == Items.ENDER_EYE)
                 {
                     enderEye++;
                 } else
@@ -95,5 +95,10 @@ public class QuantumCraftingRecipe implements IRecipe
     public ItemStack getRecipeOutput()
     {
         return ClusterRegistry.QUANTUM.getItemStack();
+    }
+
+    @Override
+    public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        return new ItemStack[0];
     }
 }

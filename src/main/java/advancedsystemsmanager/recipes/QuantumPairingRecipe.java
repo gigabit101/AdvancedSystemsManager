@@ -77,4 +77,9 @@ public class QuantumPairingRecipe implements IRecipe
 //        return new ItemStack(BlockRegistry.cableQuantum);
         return ClusterRegistry.CABLE.getItemStack();
     }
+
+    @Override
+    public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        return new ItemStack[0];
+    }
 }

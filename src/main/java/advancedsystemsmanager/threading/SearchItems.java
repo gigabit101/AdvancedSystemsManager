@@ -102,7 +102,7 @@ public class SearchItems implements Runnable
         {
             long time = System.currentTimeMillis();
             List<ItemStack> stacks = new ArrayList<ItemStack>();
-            for (Object anItemRegistry : Item.itemRegistry)
+            for (Object anItemRegistry : Item.REGISTRY)
             {
                 try
                 {

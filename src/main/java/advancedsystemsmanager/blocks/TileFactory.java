@@ -2,26 +2,24 @@ package advancedsystemsmanager.blocks;
 
 import advancedsystemsmanager.api.tileentities.ICluster;
 import advancedsystemsmanager.api.tileentities.ITileFactory;
-import advancedsystemsmanager.api.tileentities.ITileInterfaceProvider;
 import advancedsystemsmanager.api.tileentities.ITileElement;
 import advancedsystemsmanager.reference.Names;
 import advancedsystemsmanager.reference.Reference;
 import advancedsystemsmanager.tileentities.TileEntityElementBase;
-import advancedsystemsmanager.tileentities.TileEntityQuantumCable;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,9 +29,10 @@ public class TileFactory implements ITileFactory
     private Block block;
     private String[][] iconNames;
     private Class<? extends TileEntityElementBase> tileClass;
-    @SideOnly(Side.CLIENT)
-    protected IIcon[][] icons;
-    private int metadata;
+//    @SideOnly(Side.CLIENT)
+//    protected IIcon[][] icons;
+    private IBlockState state;
+//    private int metadata;
 
     public TileFactory(Class<? extends TileEntityElementBase> tileClass, String[] subtypes, String... iconNames)
     {
@@ -57,22 +56,32 @@ public class TileFactory implements ITileFactory
     }
 
     @Override
+    public IBlockState getState() {
+        return state;
+    }
+
+    @Override
+    public void setBlockState(IBlockState state) {
+        this.state = state;
+    }
+
+    @Override
     public void setBlock(Block block)
     {
         this.block = block;
     }
 
-    @Override
-    public int getMetadata()
-    {
-        return metadata;
-    }
-
-    @Override
-    public void setMetadata(int metadata)
-    {
-        this.metadata = metadata;
-    }
+//    @Override
+//    public int getMetadata()
+//    {
+//        return metadata;
+//    }
+//
+//    @Override
+//    public void setMetadata(int metadata)
+//    {
+//        this.metadata = metadata;
+//    }
 
     @Override
     public float getBlockHardness()
@@ -106,7 +115,7 @@ public class TileFactory implements ITileFactory
     @Override
     public ItemStack getItemStack(int subtype)
     {
-        return new ItemStack(getBlock(), 1, getMetadata() + subtype * 16);
+        return new ItemStack(getBlock(), 1, 0);//getMetadata() + subtype * 16);
     }
 
     @Override
@@ -116,8 +125,7 @@ public class TileFactory implements ITileFactory
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
-    {
+    public TileEntity createTileEntity(World world, IBlockState metadata) {
         if (hasTileEntity())
         {
             try
@@ -132,9 +140,9 @@ public class TileFactory implements ITileFactory
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends TileEntity> T getTileEntity(IBlockAccess world, int x, int y, int z)
+    public <T extends TileEntity> T getTileEntity(IBlockAccess world, BlockPos pos)
     {
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        TileEntity tileEntity = world.getTileEntity(pos);
         if (isInstance(tileEntity))
         {
             return (T) tileEntity;
@@ -163,8 +171,7 @@ public class TileFactory implements ITileFactory
     }
 
     @Override
-    public boolean canPlaceBlock(World world, int x, int y, int z, ItemStack stack)
-    {
+    public boolean canPlaceBlock(World world, BlockPos pos, ItemStack stack) {
         return true;
     }
 
@@ -180,6 +187,11 @@ public class TileFactory implements ITileFactory
     }
 
     @Override
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+
+    }
+
+    @Override
     public void saveToClusterTag(ItemStack stack, NBTTagCompound tag)
     {
         NBTTagCompound subtype = stack.getTagCompound();
@@ -189,43 +201,43 @@ public class TileFactory implements ITileFactory
         tag.setTag(getKey(), subtype);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register)
-    {
-        icons = new IIcon[iconNames.length][iconNames[0].length];
-        for (int i = 0; i < icons.length; i++)
-            for (int j = 0; j < icons[0].length; j++)
-                icons[i][j] = register.registerIcon(getTextureName(iconNames[i][j]));
-    }
-
-    @SideOnly(Side.CLIENT)
-    private static String getTextureName(String iconName)
-    {
-        return Reference.RESOURCE_LOCATION + ":" + iconName.replace(Names.PREFIX, "");
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(int side, int subtype)
-    {
-        return icons[subtype][0];
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list)
-    {
-        for (int i = 0; i < iconNames.length; i++)
-            list.add(getItemStack(i));
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon[] getIcons(int subtype)
-    {
-        return icons[subtype];
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public void registerIcons(IIconRegister register)
+//    {
+//        icons = new IIcon[iconNames.length][iconNames[0].length];
+//        for (int i = 0; i < icons.length; i++)
+//            for (int j = 0; j < icons[0].length; j++)
+//                icons[i][j] = register.registerIcon(getTextureName(iconNames[i][j]));
+//    }
+//
+//    @SideOnly(Side.CLIENT)
+//    private static String getTextureName(String iconName)
+//    {
+//        return Reference.RESOURCE_LOCATION + ":" + iconName.replace(Names.PREFIX, "");
+//    }
+//
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public IIcon getIcon(int side, int subtype)
+//    {
+//        return icons[subtype][0];
+//    }
+//
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list)
+//    {
+//        for (int i = 0; i < iconNames.length; i++)
+//            list.add(getItemStack(i));
+//    }
+//
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public IIcon[] getIcons(int subtype)
+//    {
+//        return icons[subtype];
+//    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -234,9 +246,9 @@ public class TileFactory implements ITileFactory
 
     }
 
-    public boolean isBlock(Block block, int meta)
+    public boolean isBlock(Block block, IBlockState state)
     {
-        return block == getBlock() && meta == getMetadata();
+        return block == getBlock() && state == getState();
     }
 
     public static class Cluster extends TileFactory
@@ -282,11 +294,11 @@ public class TileFactory implements ITileFactory
             super(tileClass, subType, iconNames);
         }
 
-        @Override
-        @SideOnly(Side.CLIENT)
-        public IIcon getIcon(int side, int subtype)
-        {
-            return super.icons[subtype][side == 3 ? 0 : 1];
-        }
+//        @Override
+//        @SideOnly(Side.CLIENT)
+//        public IIcon getIcon(int side, int subtype)
+//        {
+//            return super.icons[subtype][side == 3 ? 0 : 1];
+//        }
     }
 }

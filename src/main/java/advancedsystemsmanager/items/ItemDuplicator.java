@@ -9,7 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -32,14 +35,14 @@ public class ItemDuplicator extends ItemBase implements ILeftClickItem
         {
             if (stack.getTagCompound().hasKey(AUTHOR))
             {
-                list.add(StatCollector.translateToLocalFormatted(Names.AUTHORED, stack.getTagCompound().getString(AUTHOR)));
+//                list.add(StatCollector.translateToLocalFormatted(Names.AUTHORED, stack.getTagCompound().getString(AUTHOR)));
             } else
             {
                 int x = stack.getTagCompound().getInteger(X);
                 int y = stack.getTagCompound().getInteger(Y);
                 int z = stack.getTagCompound().getInteger(Z);
-                list.add(StatCollector.translateToLocal(Names.STORED_LOCATION));
-                list.add(StatCollector.translateToLocalFormatted(Names.LOCATION, x, y, z));
+//                list.add(StatCollector.translateToLocal(Names.STORED_LOCATION));
+//                list.add(StatCollector.translateToLocalFormatted(Names.LOCATION, x, y, z));
             }
         }
     }
@@ -53,11 +56,10 @@ public class ItemDuplicator extends ItemBase implements ILeftClickItem
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
-    {
+    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         if (!world.isRemote && player.isSneaking())
         {
-            TileEntity te = ClusterRegistry.MANAGER.getTileEntity(world, x, y, z);
+            TileEntity te = ClusterRegistry.MANAGER.getTileEntity(world, pos);
             if (te instanceof TileEntityManager)
             {
                 if (stack.hasTagCompound())
@@ -69,33 +71,35 @@ public class ItemDuplicator extends ItemBase implements ILeftClickItem
                     NBTTagCompound tagCompound = new NBTTagCompound();
                     ((TileEntityManager)te).writeToTileNBT(tagCompound);
                     tagCompound.setBoolean(CONTENTS, true);
-                    tagCompound.setInteger(X, x);
-                    tagCompound.setInteger(Y, y);
-                    tagCompound.setInteger(Z, z);
+                    tagCompound.setInteger(X, pos.getX());
+                    tagCompound.setInteger(Y, pos.getY());
+                    tagCompound.setInteger(Z, pos.getZ());
                     tagCompound.setTag("ench", new NBTTagList());
                     stack.setTagCompound(tagCompound);
                 }
-                return true;
+                return EnumActionResult.PASS;
             }
         }
         validateNBT(stack);
-        return false;
+        return EnumActionResult.FAIL;
     }
+
 
     @Override
     public boolean leftClick(EntityPlayer player, ItemStack stack, World world, int x, int y, int z, int face)
     {
-        TileEntity te = world.getTileEntity(x, y, z);
+        BlockPos pos = new BlockPos(x,y,z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileEntityManager)
         {
-            world.removeTileEntity(x, y, z);
+            world.removeTileEntity(pos);
             TileEntityManager manager = new TileEntityManager();
             if (stack.hasTagCompound() && ItemDuplicator.validateNBT(stack))
             {
                 manager.readFromNBT(stack.getTagCompound());
                 stack.setTagCompound(null);
             }
-            world.setTileEntity(x, y, z, manager);
+            world.setTileEntity(pos, manager);
             return true;
         }
         return false;

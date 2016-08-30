@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface IInternalTank
 {
+    //TODO port to new system
     IFluidHandler getTank();
 
     List<IBufferElement<Fluid>> getSubElements(int id, MenuLiquid menuLiquid);

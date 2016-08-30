@@ -1,14 +1,16 @@
 package advancedsystemsmanager.api.tileentities;
 
+import net.minecraft.util.EnumFacing;
+
 public interface IRedstoneListener
 {
-    boolean canConnectRedstone(int side);
+    boolean canConnectRedstone(EnumFacing side);
 
-    int getComparatorInputOverride(int side);
+    int getComparatorInputOverride(EnumFacing side);
 
-    int isProvidingWeakPower(int side);
+    int isProvidingWeakPower(EnumFacing side);
 
-    int isProvidingStrongPower(int side);
+    int isProvidingStrongPower(EnumFacing side);
 
-    boolean shouldCheckWeakPower(int side);
+    boolean shouldCheckWeakPower(EnumFacing side);
 }

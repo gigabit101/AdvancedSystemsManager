@@ -10,12 +10,11 @@ import java.util.ArrayList;
 
 public class OreDictionaryHelper
 {
-
     public static void registerUsefulThings()
     {
         for (int i = 0; i < 15; i++)
         {
-            safeRegister("wool", new ItemStack(Blocks.wool, 1, i));
+            safeRegister("wool", new ItemStack(Blocks.WOOL, 1, i));
         }
     }
 

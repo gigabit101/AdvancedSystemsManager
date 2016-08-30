@@ -11,8 +11,6 @@ import advancedsystemsmanager.naming.NameRegistry;
 import advancedsystemsmanager.network.ASMPacket;
 import advancedsystemsmanager.reference.Names;
 import advancedsystemsmanager.registry.ItemRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,10 +22,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,9 +74,9 @@ public class ItemLabeler extends ItemBase implements IItemInterfaceProvider, ILe
         tagCompound.setTag("saved", tagList);
     }
 
-    public static boolean isValidTile(World world, int x, int y, int z)
+    public static boolean isValidTile(World world, BlockPos pos)
     {
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         return te instanceof IInventory || te instanceof IFluidHandler || te instanceof ITileElement || te instanceof IInternalInventory || te instanceof IInternalTank || isValidClass(te);
     }
 
@@ -94,14 +95,15 @@ public class ItemLabeler extends ItemBase implements IItemInterfaceProvider, ILe
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
-    {
+    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
         if (world.isRemote)
         {
             player.openGui(AdvancedSystemsManager.INSTANCE, 0, world, player.chunkCoordX, player.chunkCoordY, player.chunkCoordZ);
         }
-        return super.onItemRightClick(stack, world, player);
+        return super.onItemRightClick(stack, world, player, hand);
     }
+
+
 
     @Override
     @SuppressWarnings(value = "unchecked")
@@ -109,8 +111,8 @@ public class ItemLabeler extends ItemBase implements IItemInterfaceProvider, ILe
     {
         super.addInformation(stack, player, list, extra);
         String label = getLabel(stack);
-        if (label.isEmpty()) list.add(StatCollector.translateToLocal(Names.CLEAR_LABEL));
-        else list.add(StatCollector.translateToLocalFormatted(Names.LABELLED, label));
+//        if (label.isEmpty()) list.add(StatCollector.translateToLocal(Names.CLEAR_LABEL));
+//        else list.add(StatCollector.translateToLocalFormatted(Names.LABELLED, label));
     }
 
     @SideOnly(Side.CLIENT)
@@ -121,10 +123,10 @@ public class ItemLabeler extends ItemBase implements IItemInterfaceProvider, ILe
     }
 
     @Override
-    public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player)
-    {
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
         return false;
     }
+
 
     public static String getLabel(ItemStack stack)
     {
@@ -152,19 +154,20 @@ public class ItemLabeler extends ItemBase implements IItemInterfaceProvider, ILe
     @Override
     public boolean leftClick(EntityPlayer player, ItemStack stack, World world, int x, int y, int z, int face)
     {
-        if (ItemLabeler.isValidTile(world, x, y, z))
+        BlockPos pos = new BlockPos(x,y,z);
+        if (ItemLabeler.isValidTile(world, pos))
         {
             String label = ItemLabeler.getLabel(stack);
             if (label.isEmpty())
             {
                 if (NameRegistry.removeName(world, x, y, z))
                 {
-                    player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal(Names.LABEL_CLEARED)));
+//                    player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocal(Names.LABEL_CLEARED)));
                 }
             } else
             {
                 NameRegistry.saveName(world, x, y, z, label);
-                player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocalFormatted(Names.LABEL_SAVED, label)));
+//                player.addChatComponentMessage(new ChatComponentText(StatCollector.translateToLocalFormatted(Names.LABEL_SAVED, label)));
             }
             return true;
         }

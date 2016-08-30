@@ -2,9 +2,9 @@ package advancedsystemsmanager.api.gui;
 
 import advancedsystemsmanager.api.network.IPacketReader;
 import advancedsystemsmanager.api.network.IPacketWriter;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IManagerButton extends IPacketWriter, IPacketReader
 {

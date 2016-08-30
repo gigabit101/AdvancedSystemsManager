@@ -47,7 +47,7 @@ public class Key<Type>
         @Override
         void setHashCode(ItemStack stack)
         {
-            hashCode = stack.getItem().hashCode() ^ stack.getItemDamage() ^ (stack.hasTagCompound() ? stack.stackTagCompound.hashCode() : 0);
+            hashCode = stack.getItem().hashCode() ^ stack.getItemDamage() ^ (stack.hasTagCompound() ? stack.getTagCompound().hashCode() : 0);
         }
 
         @Override

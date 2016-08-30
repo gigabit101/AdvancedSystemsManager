@@ -2,20 +2,20 @@ package advancedsystemsmanager.items.blocks;
 
 import advancedsystemsmanager.api.tileentities.ITileFactory;
 import advancedsystemsmanager.api.items.IElementItem;
-import advancedsystemsmanager.api.items.ITooltipFactory;
 import advancedsystemsmanager.api.tileentities.ITileElement;
 import advancedsystemsmanager.blocks.BlockTileElement;
 import advancedsystemsmanager.blocks.TileFactory;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ItemTileElement extends ItemBlock implements IElementItem
 {
@@ -52,17 +52,16 @@ public class ItemTileElement extends ItemBlock implements IElementItem
     }
 
     @Override
-    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
-    {
-        if (!getTileFactory(stack).canPlaceBlock(world, x, y, z, stack))
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+        if (!getTileFactory(stack).canPlaceBlock(world, pos, stack))
         {
             return false;
         }
-        if (!super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata))
+        if (!super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState))
         {
             return false;
         }
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof ITileElement)
         {
             ((ITileElement) te).setSubtype(stack.getItemDamage() / 16);
@@ -73,6 +72,7 @@ public class ItemTileElement extends ItemBlock implements IElementItem
         }
         return true;
     }
+
 
     @Override
     public void onCreated(ItemStack stack, World world, EntityPlayer player)

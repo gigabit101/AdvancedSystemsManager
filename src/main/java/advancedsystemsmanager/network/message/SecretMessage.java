@@ -1,18 +1,18 @@
 package advancedsystemsmanager.network.message;
 
 import advancedsystemsmanager.containers.ContainerBase;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAICreeperSwell;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.Iterator;
 
@@ -60,12 +60,12 @@ public class SecretMessage implements IMessage, IMessageHandler<SecretMessage, I
                         while (itr.hasNext())
                         {
                             Object ai = itr.next();
-                            if (ai instanceof EntityAICreeperSwell || ai instanceof EntityAIAttackOnCollide)
-                                itr.remove();
+//                            if (ai instanceof EntityAICreeperSwell || ai instanceof EntityAIAttackOnCollide)
+//                                itr.remove();
                         }
-                        if (world.rand.nextInt(10) == 0) creeper.getDataWatcher().updateObject(17, 1);
-                        world.spawnEntityInWorld(creeper);
-                        tagCompound.setBoolean("KONAMI", true);
+//                        if (world.rand.nextInt(10) == 0) creeper.getDataWatcher().updateObject(17, 1);
+//                        world.spawnEntityInWorld(creeper);
+//                        tagCompound.setBoolean("KONAMI", true);
                         break;
                     }
                 }
@@ -83,7 +83,8 @@ public class SecretMessage implements IMessage, IMessageHandler<SecretMessage, I
         x = (int)(Math.floor(player.posX) + 4D - world.rand.nextDouble() * 8);
         z = (int)(Math.floor(player.posZ) + 4D - world.rand.nextDouble() * 8);
         y = (int)player.posY;
-        while (world.isAirBlock(x, y, z)) y--;
-        while (!world.isAirBlock(x, y, z)) y++;
+        BlockPos pos = new BlockPos(x,y,z);
+        while (world.isAirBlock(pos)) y--;
+        while (!world.isAirBlock(pos)) y++;
     }
 }

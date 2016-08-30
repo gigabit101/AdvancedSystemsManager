@@ -7,11 +7,29 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+
+import javax.annotation.Nullable;
 
 public class Null
 {
     public static IInventory NULL_INVENTORY = new IInventory()
     {
+        @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
+        public boolean hasCustomName() {
+            return false;
+        }
+
+        @Override
+        public ITextComponent getDisplayName() {
+            return null;
+        }
+
         @Override
         public int getSizeInventory()
         {
@@ -30,28 +48,17 @@ public class Null
             return null;
         }
 
+        @Nullable
         @Override
-        public ItemStack getStackInSlotOnClosing(int slot)
-        {
+        public ItemStack removeStackFromSlot(int index) {
             return null;
         }
+
 
         @Override
         public void setInventorySlotContents(int slot, ItemStack stack)
         {
 
-        }
-
-        @Override
-        public String getInventoryName()
-        {
-            return null;
-        }
-
-        @Override
-        public boolean hasCustomInventoryName()
-        {
-            return false;
         }
 
         @Override
@@ -72,13 +79,13 @@ public class Null
         }
 
         @Override
-        public void openInventory()
-        {
+        public void openInventory(EntityPlayer player) {
+
         }
 
         @Override
-        public void closeInventory()
-        {
+        public void closeInventory(EntityPlayer player) {
+
         }
 
         @Override
@@ -87,8 +94,28 @@ public class Null
             return false;
         }
 
+        @Override
+        public int getField(int id) {
+            return 0;
+        }
+
+        @Override
+        public void setField(int id, int value) {
+
+        }
+
+        @Override
+        public int getFieldCount() {
+            return 0;
+        }
+
+        @Override
+        public void clear() {
+
+        }
+
     };
-    public static ItemStack NULL_STACK = new ItemStack(Blocks.end_portal, 0);
+    public static ItemStack NULL_STACK = new ItemStack(Blocks.END_PORTAL, 0);
     public static IPacketProvider NULL_PACKET = new IPacketProvider()
     {
         @Override

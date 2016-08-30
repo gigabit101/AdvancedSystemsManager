@@ -1,6 +1,6 @@
 package advancedsystemsmanager.api.tileentities;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 import java.util.List;
 
@@ -8,5 +8,5 @@ public interface ICluster
 {
     List<ITileElement> getTiles();
 
-    ForgeDirection getFacing();
+    EnumFacing getFacing();
 }

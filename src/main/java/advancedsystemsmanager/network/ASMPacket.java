@@ -2,15 +2,15 @@ package advancedsystemsmanager.network;
 
 import advancedsystemsmanager.containers.ContainerBase;
 import advancedsystemsmanager.reference.Reference;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
-import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -77,7 +77,7 @@ public class ASMPacket extends PacketBuffer
 
     public void sendPlayerPackets(double x, double y, double z, double r, int dimension)
     {
-        packetHandler.sendToAllAround(getPacket(), new TargetPoint(dimension, x, y, z, r));
+        packetHandler.sendToAllAround(getPacket(), new NetworkRegistry.TargetPoint(dimension, x, y, z, r));
     }
 
     public void sendPlayerPacket(EntityPlayerMP player)
@@ -107,14 +107,10 @@ public class ASMPacket extends PacketBuffer
         }
     }
 
-    public void writeNBTTagCompoundToBuffer(NBTTagCompound tag)
+    public PacketBuffer writeNBTTagCompoundToBuffer(NBTTagCompound tag)
     {
-        try
-        {
-            super.writeNBTTagCompoundToBuffer(tag);
-        } catch (IOException ignored)
-        {
-        }
+        PacketBuffer packetBuffer = super.writeNBTTagCompoundToBuffer(tag);
+        return packetBuffer;
     }
 
     public NBTTagCompound readNBTTagCompoundFromBuffer()
@@ -129,14 +125,10 @@ public class ASMPacket extends PacketBuffer
     }
 
     @Override
-    public void writeItemStackToBuffer(ItemStack stack)
+    public PacketBuffer writeItemStackToBuffer(ItemStack stack)
     {
-        try
-        {
-            super.writeItemStackToBuffer(stack);
-        } catch (IOException ignored)
-        {
-        }
+        super.writeItemStackToBuffer(stack);
+        return null;
     }
 
     @Override
@@ -154,25 +146,15 @@ public class ASMPacket extends PacketBuffer
     @Override
     public String readStringFromBuffer(int maxLength)
     {
-        try
-        {
-            return super.readStringFromBuffer(maxLength);
-        } catch (IOException e)
-        {
-            return null;
-        }
+        return super.readStringFromBuffer(maxLength);
     }
 
     @Override
-    public void writeStringToBuffer(String string)
-    {
-        try
-        {
-            super.writeStringToBuffer(string);
-        } catch (IOException ignored)
-        {
-        }
+    public PacketBuffer writeString(String string) {
+        PacketBuffer packetBuffer = super.writeString(string);
+        return packetBuffer;
     }
+
 
     public ASMPacket copy()
     {

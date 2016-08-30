@@ -1,10 +1,10 @@
 package advancedsystemsmanager.helpers;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +26,9 @@ public class WorldSaveHelper
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event)
     {
-        if (event.world.provider.dimensionId == 0 && !event.world.isRemote)
+        if (event.getWorld().provider.getDimension() == 0 && !event.getWorld().isRemote)
         {
-            this.world = event.world;
+            this.world = event.getWorld();
             for (SavableData data : savableData)
             {
                 if (data.needsLoading())
@@ -42,7 +42,7 @@ public class WorldSaveHelper
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event)
     {
-        if (event.world.provider.dimensionId == 0 && !event.world.isRemote)
+        if (event.getWorld().provider.getDimension() == 0 && !event.getWorld().isRemote)
         {
             unload();
         }
@@ -65,8 +65,8 @@ public class WorldSaveHelper
 
     private boolean loadData(SavableData data)
     {
-        WorldSavedData saved = world.mapStorage.loadData(data.getClass(), data.mapName);
-        world.mapStorage.setData(data.mapName, data);
+        WorldSavedData saved = world.getMapStorage().getOrLoadData(data.getClass(), data.mapName);
+        world.getMapStorage().setData(data.mapName, data);
         return data.copy(saved);
     }
 }

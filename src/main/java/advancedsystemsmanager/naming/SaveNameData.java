@@ -85,8 +85,9 @@ public class SaveNameData extends SavableData implements IPacketReader, IPacketW
         return false;
     }
 
+
     @Override
-    public void writeToNBT(NBTTagCompound tag)
+    public NBTTagCompound writeToNBT(NBTTagCompound tag)
     {
         NBTTagList list = new NBTTagList();
         for (int dim : registry.keySet())
@@ -106,6 +107,7 @@ public class SaveNameData extends SavableData implements IPacketReader, IPacketW
             }
         }
         tag.setTag("l", list);
+        return tag;
     }
 
     @Override

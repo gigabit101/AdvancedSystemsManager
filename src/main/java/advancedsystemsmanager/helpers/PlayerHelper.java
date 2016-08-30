@@ -7,7 +7,7 @@ public class PlayerHelper
 {
     public static boolean consumeItem(EntityPlayer player)
     {
-        return consumeItem(player, player.getCurrentEquippedItem(), player.inventory.currentItem);
+        return consumeItem(player, player.getHeldItemMainhand(), player.inventory.currentItem);
     }
 
     public static boolean consumeItem(EntityPlayer player, ItemStack stack, int slot)

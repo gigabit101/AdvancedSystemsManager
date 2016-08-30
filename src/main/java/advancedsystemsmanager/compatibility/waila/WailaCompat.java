@@ -7,12 +7,11 @@ import advancedsystemsmanager.reference.Mods;
 import advancedsystemsmanager.tileentities.TileEntityCluster;
 import advancedsystemsmanager.tileentities.TileEntityEmitter;
 import advancedsystemsmanager.tileentities.TileEntityQuantumCable;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.event.FMLInterModComms;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import net.minecraft.inventory.IInventory;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,6 @@ public class WailaCompat extends CompatBase
     private static Object registrar;
     private static List<Class> labelClasses = new ArrayList<Class>();
 
-    @Optional.Method(modid = Mods.WAILA)
     public static void callbackRegister(IWailaRegistrar registrar)
     {
         IWailaDataProvider labelProvider = new WailaLabelProvider();

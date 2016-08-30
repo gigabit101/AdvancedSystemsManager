@@ -1,8 +1,7 @@
 package advancedsystemsmanager.reference;
 
-import cpw.mods.fml.common.ModMetadata;
+import net.minecraftforge.fml.common.ModMetadata;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 public class Metadata

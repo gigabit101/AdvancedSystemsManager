@@ -2,8 +2,6 @@ package advancedsystemsmanager.helpers;
 
 import advancedsystemsmanager.reference.Names;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
 
 public class LocalizationHelper
 {

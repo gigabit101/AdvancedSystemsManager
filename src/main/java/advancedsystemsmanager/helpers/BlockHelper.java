@@ -7,9 +7,9 @@ import advancedsystemsmanager.util.SystemCoord;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class BlockHelper
 
     public static int getReverseDirection(int dir)
     {
-        return ForgeDirection.OPPOSITES[dir];
+        return EnumFacing.OPPOSITES[dir];
     }
 
     public static void getAdjacentCables(SystemCoord coordinate, List<SystemCoord> visited, Queue<SystemCoord> cables)

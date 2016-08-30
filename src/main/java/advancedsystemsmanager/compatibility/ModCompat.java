@@ -1,25 +1,21 @@
 package advancedsystemsmanager.compatibility;
 
-import advancedsystemsmanager.compatibility.appliedenergistics.AECompat;
-import advancedsystemsmanager.compatibility.computercraft.ComputerCraftCompat;
-import advancedsystemsmanager.compatibility.jabba.JabbaCompat;
 import advancedsystemsmanager.compatibility.rf.RFCompat;
-import advancedsystemsmanager.compatibility.thaumcraft.TCCompat;
 import advancedsystemsmanager.compatibility.waila.WailaCompat;
 import advancedsystemsmanager.items.ItemLabeler;
 import advancedsystemsmanager.reference.Mods;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModAPIManager;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModAPIManager;
 
 public enum ModCompat
 {
-    COMPUTERCRAFT(Mods.COMPUTERCRAFT, "ComputerCraft", new ComputerCraftCompat()),
+//    COMPUTERCRAFT(Mods.COMPUTERCRAFT, "ComputerCraft", new ComputerCraftCompat()),
     OPENCOMPUTERS(Mods.OPENCOMPUTERS, "OpenComputers"),
-    JABBA(Mods.JABBA, "JABBA", new JabbaCompat()),
-    WAILA(Mods.WAILA, "Waila", new WailaCompat()),
-    RF(Mods.COFH_ENERGY, "RF API", new RFCompat()),
-    AE(Mods.APPLIEDENERGISTICS2, "Applied Energistics", new AECompat()),
-    TC(Mods.THAUMCRAFT, "Thaumcraft", new TCCompat());
+//    JABBA(Mods.JABBA, "JABBA", new JabbaCompat()),
+    WAILA(Mods.WAILA, "Waila", new WailaCompat());
+//    RF(Mods.COFH_ENERGY, "RF API", new RFCompat());
+//    AE(Mods.APPLIEDENERGISTICS2, "Applied Energistics", new AECompat()),
+//    TC(Mods.THAUMCRAFT, "Thaumcraft", new TCCompat());
 
     private final String modId;
     private final String modName;

@@ -1,24 +1,13 @@
 package advancedsystemsmanager.naming;
 
-import advancedsystemsmanager.api.items.ILeftClickItem;
-import advancedsystemsmanager.items.ItemDuplicator;
-import advancedsystemsmanager.items.ItemLabeler;
 import advancedsystemsmanager.network.PacketHandler;
-import advancedsystemsmanager.reference.Names;
-import advancedsystemsmanager.registry.ItemRegistry;
-import advancedsystemsmanager.tileentities.manager.TileEntityManager;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 public class EventHandler
 {
@@ -35,22 +24,22 @@ public class EventHandler
     @SubscribeEvent
     public void blockBreak(BlockEvent.BreakEvent event)
     {
-        NameRegistry.removeName(event.world, event.x, event.y, event.z);
+        NameRegistry.removeName(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
     }
 
     @SubscribeEvent
     public void playerInteract(PlayerInteractEvent event)
     {
-        ItemStack stack = event.entityPlayer.getCurrentEquippedItem();
-        if (event.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK && stack != null)
-        {
-            if (stack.getItem() instanceof ILeftClickItem)
-            {
-                if (((ILeftClickItem) stack.getItem()).leftClick(event.entityPlayer, stack, event.world, event.x, event.y, event.z, event.face))
-                {
-                    event.setCanceled(true);
-                }
-            }
-        }
+        ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
+//        if (event.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK && stack != null)
+//        {
+//            if (stack.getItem() instanceof ILeftClickItem)
+//            {
+//                if (((ILeftClickItem) stack.getItem()).leftClick(event.getEntityPlayer(), stack, event.getWorld(), event.x, event.y, event.z, event.face))
+//                {
+//                    event.setCanceled(true);
+//                }
+//            }
+//        }
     }
 }

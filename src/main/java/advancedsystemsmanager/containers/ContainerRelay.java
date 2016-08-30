@@ -4,7 +4,7 @@ import advancedsystemsmanager.network.PacketHandler;
 import advancedsystemsmanager.tileentities.TileEntityRelay;
 import advancedsystemsmanager.util.UserPermission;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +21,9 @@ public class ContainerRelay extends ContainerBase<TileEntityRelay>
     }
 
     @Override
-    public void addCraftingToCrafters(ICrafting player)
+    public void addListener(IContainerListener player)
     {
-        super.addCraftingToCrafters(player);
+        super.addListener(player);
         PacketHandler.sendAllData(this, player, te);
         oldPermissions = new ArrayList<UserPermission>();
         for (UserPermission permission : te.getPermissions())

@@ -5,6 +5,7 @@ import advancedsystemsmanager.registry.ItemRegistry;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,8 +38,7 @@ public abstract class CommandDuplicator implements ISubCommand
             if (!tagCompound.hasKey(key)) tagCompound.setTag(key, defaultTagCompound.getTag(key));
         }
         return tagCompound;
-    }    public static ItemStack getDuplicator(ICommandSender sender)
-    {
+    }    public static ItemStack getDuplicator(ICommandSender sender) throws PlayerNotFoundException {
         if (sender instanceof EntityPlayerMP)
         {
             EntityPlayerMP player = CommandBase.getCommandSenderAsPlayer(sender);
@@ -51,8 +51,7 @@ public abstract class CommandDuplicator implements ISubCommand
 
 
     @Override
-    public void handleCommand(ICommandSender sender, String[] arguments)
-    {
+    public void handleCommand(ICommandSender sender, String[] arguments) throws CommandException {
         if (!(sender instanceof EntityPlayerMP))
         {
             throw new CommandException(Names.COMMAND_PLAYER_ONLY);

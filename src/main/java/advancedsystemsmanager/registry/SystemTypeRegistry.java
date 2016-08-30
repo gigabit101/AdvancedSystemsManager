@@ -14,7 +14,6 @@ import advancedsystemsmanager.tileentities.manager.TileEntityManager;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.IFluidHandler;
-import thaumcraft.api.aspects.IAspectContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -180,7 +179,8 @@ public class SystemTypeRegistry
         @Override
         public boolean isInstance(TileEntityManager manager, TileEntity tileEntity)
         {
-            return tileEntity.getBlockType().hasComparatorInputOverride();
+//            return tileEntity.getBlockType().hasComparatorInputOverride();
+            return false;
         }
     });
 

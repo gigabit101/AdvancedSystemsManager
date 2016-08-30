@@ -3,18 +3,19 @@ package advancedsystemsmanager.containers;
 import advancedsystemsmanager.api.network.IPacketSync;
 import advancedsystemsmanager.api.tileentities.ITileInterfaceProvider;
 import advancedsystemsmanager.network.ASMPacket;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+
 
 public abstract class ContainerBase<T extends TileEntity & ITileInterfaceProvider> extends Container
 {
@@ -65,9 +66,9 @@ public abstract class ContainerBase<T extends TileEntity & ITileInterfaceProvide
         return te;
     }
 
-    public List<ICrafting> getCrafters()
+    public List<IContainerListener> getCrafters()
     {
-        return crafters;
+        return listeners;
     }
 
     @SideOnly(Side.CLIENT)
@@ -117,6 +118,6 @@ public abstract class ContainerBase<T extends TileEntity & ITileInterfaceProvide
     @Override
     public boolean canInteractWith(EntityPlayer entityplayer)
     {
-        return entityplayer.getDistanceSq(te.xCoord, te.yCoord, te.zCoord) <= 64;
+        return true;
     }
 }

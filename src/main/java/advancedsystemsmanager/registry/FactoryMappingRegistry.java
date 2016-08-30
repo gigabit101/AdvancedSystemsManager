@@ -3,7 +3,6 @@ package advancedsystemsmanager.registry;
 import advancedsystemsmanager.AdvancedSystemsManager;
 import advancedsystemsmanager.api.network.IPacketReader;
 import advancedsystemsmanager.api.network.IPacketWriter;
-import advancedsystemsmanager.nei.NEIConfig;
 import advancedsystemsmanager.network.ASMPacket;
 import advancedsystemsmanager.reference.Files;
 import com.google.common.collect.BiMap;
@@ -151,7 +150,6 @@ public class FactoryMappingRegistry implements IPacketReader, IPacketWriter
             register(packet.readStringFromBuffer(), packet.readUnsignedByte());
         }
         BlockRegistry.registerTiles();
-        NEIConfig.hideBlocks();
         return false;
     }
 
@@ -161,7 +159,7 @@ public class FactoryMappingRegistry implements IPacketReader, IPacketWriter
         packet.writeByte(factoryMapping.size());
         for (Map.Entry<String, Integer> entry : factoryMapping.entrySet())
         {
-            packet.writeStringToBuffer(entry.getKey());
+            packet.writeString(entry.getKey());
             packet.writeByte(entry.getValue());
         }
         return false;

@@ -6,12 +6,9 @@ import advancedsystemsmanager.tileentities.manager.Settings;
 import advancedsystemsmanager.reference.Mods;
 import advancedsystemsmanager.reference.Reference;
 import advancedsystemsmanager.reference.Textures;
-import codechicken.nei.VisiblityData;
-import codechicken.nei.api.INEIGuiHandler;
-import codechicken.nei.api.TaggedInventoryArea;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+//import codechicken.nei.VisiblityData;
+//import codechicken.nei.api.INEIGuiHandler;
+//import codechicken.nei.api.TaggedInventoryArea;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -26,6 +23,8 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL12;
 
 import java.util.*;
@@ -34,8 +33,8 @@ import java.util.List;
 import static org.lwjgl.opengl.GL11.*;
 
 @SideOnly(Side.CLIENT)
-@Optional.Interface(iface = "codechicken.nei.api.INEIGuiHandler", modid = Mods.NEI)
-public abstract class GuiBase extends GuiContainer implements INEIGuiHandler
+//@Optional.Interface(iface = "codechicken.nei.api.INEIGuiHandler", modid = Mods.NEI)
+public abstract class GuiBase extends GuiContainer //implements INEIGuiHandler
 {
     protected static final float SCALING = 0.00390625F;
     private static final ResourceLocation TERRAIN = new ResourceLocation("textures/atlas/blocks.png");
@@ -702,7 +701,7 @@ public abstract class GuiBase extends GuiContainer implements INEIGuiHandler
     public void drawLines(int[] points, int[] colour)
     {
         glDisable(GL_TEXTURE_2D);
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
         tessellator.startDrawing(GL_LINE_STRIP);
         glLineWidth(5 * getScale());
         tessellator.setColorRGBA(colour[0], colour[1], colour[2], colour[3]);
@@ -719,7 +718,7 @@ public abstract class GuiBase extends GuiContainer implements INEIGuiHandler
             return scale;
         } else
         {
-            ScaledResolution scaledresolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
+            ScaledResolution scaledresolution = new ScaledResolution(this.mc);
             float w = scaledresolution.getScaledWidth() * 0.9F;
             float h = scaledresolution.getScaledHeight() * 0.9F;
             float multX = w / xSize;
@@ -779,32 +778,33 @@ public abstract class GuiBase extends GuiContainer implements INEIGuiHandler
         glPopMatrix();
     }
 
-    public void drawFluid(Fluid fluid, int x, int y)
-    {
-        IIcon icon = fluid.getIcon();
-
-        if (icon == null)
-        {
-            if (FluidRegistry.WATER.equals(fluid))
-            {
-                icon = Blocks.water.getIcon(0, 0);
-            } else if (FluidRegistry.LAVA.equals(fluid))
-            {
-                icon = Blocks.lava.getIcon(0, 0);
-            }
-        }
-
-        if (icon != null)
-        {
-            bindTexture(TERRAIN);
-            setColor(fluid.getColor());
-
-            drawIcon(icon, x, y);
-
-            glColor4f(1F, 1F, 1F, 1F);
-            bindTexture(getComponentResource());
-        }
-    }
+      //TODO
+//    public void drawFluid(Fluid fluid, int x, int y)
+//    {
+//        IIcon icon = fluid.getIcon();
+//
+//        if (icon == null)
+//        {
+//            if (FluidRegistry.WATER.equals(fluid))
+//            {
+//                icon = Blocks.water.getIcon(0, 0);
+//            } else if (FluidRegistry.LAVA.equals(fluid))
+//            {
+//                icon = Blocks.lava.getIcon(0, 0);
+//            }
+//        }
+//
+//        if (icon != null)
+//        {
+//            bindTexture(TERRAIN);
+//            setColor(fluid.getColor());
+//
+//            drawIcon(icon, x, y);
+//
+//            glColor4f(1F, 1F, 1F, 1F);
+//            bindTexture(getComponentResource());
+//        }
+//    }
 
     private void setColor(int color)
     {
@@ -816,50 +816,14 @@ public abstract class GuiBase extends GuiContainer implements INEIGuiHandler
         glColor4f(colorComponents[2], colorComponents[1], colorComponents[0], 1F);
     }
 
-    public void drawIcon(IIcon icon, int x, int y)
-    {
-        drawTexturedModelRectFromIcon(x, y, icon, 16, 16);
-    }
+//    public void drawIcon(IIcon icon, int x, int y)
+//    {
+//        drawTexturedModelRectFromIcon(x, y, icon, 16, 16);
+//    }
 
     public int getFontHeight()
     {
         return fontRendererObj.FONT_HEIGHT;
-    }
-
-    @Override
-    @Optional.Method(modid = Mods.NEI)
-    public VisiblityData modifyVisiblity(GuiContainer guiContainer, VisiblityData visiblityData)
-    {
-        visiblityData.showStateButtons = false;
-        return visiblityData;
-    }
-
-    @Override
-    @Optional.Method(modid = Mods.NEI)
-    public Iterable<Integer> getItemSpawnSlots(GuiContainer gui, ItemStack item)
-    {
-        return null;
-    }
-
-    @Override
-    @Optional.Method(modid = Mods.NEI)
-    public List<TaggedInventoryArea> getInventoryAreas(GuiContainer gui)
-    {
-        return null;
-    }
-
-    @Override
-    @Optional.Method(modid = Mods.NEI)
-    public boolean handleDragNDrop(GuiContainer gui, int mouseX, int mouseY, ItemStack draggedStack, int button)
-    {
-        return false;
-    }
-
-    @Override
-    @Optional.Method(modid = Mods.NEI)
-    public boolean hideItemPanelSlot(GuiContainer gui, int x, int y, int w, int h)
-    {
-        return !(x + w < this.guiLeft || x > this.guiLeft + this.width || y + h < this.guiTop || y > this.guiTop + this.height);
     }
 
     private static class ToggleCursor extends TimerTask

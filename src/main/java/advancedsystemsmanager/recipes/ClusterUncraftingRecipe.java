@@ -1,16 +1,15 @@
 package advancedsystemsmanager.recipes;
 
-import advancedsystemsmanager.helpers.PlayerHelper;
 import advancedsystemsmanager.registry.ClusterRegistry;
 import advancedsystemsmanager.tileentities.TileEntityCluster;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.oredict.RecipeSorter;
 
 public class ClusterUncraftingRecipe implements IRecipe
@@ -88,6 +87,11 @@ public class ClusterUncraftingRecipe implements IRecipe
         return null;
     }
 
+    @Override
+    public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        return new ItemStack[0];
+    }
+
     @SubscribeEvent
     public void onCrafting(PlayerEvent.ItemCraftedEvent e)
     {
@@ -104,7 +108,7 @@ public class ClusterUncraftingRecipe implements IRecipe
                     {
                         component.stackSize = stackSize;
                         if (!e.player.inventory.addItemStackToInventory(component))
-                            e.player.dropPlayerItemWithRandomChoice(component, false);
+                            e.player.dropItem(component, false);
                     }
                 }
             }

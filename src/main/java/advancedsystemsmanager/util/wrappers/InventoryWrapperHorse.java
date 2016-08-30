@@ -1,11 +1,9 @@
 package advancedsystemsmanager.util.wrappers;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-
 
 public class InventoryWrapperHorse extends InventoryWrapper
 {
@@ -28,7 +26,7 @@ public class InventoryWrapperHorse extends InventoryWrapper
             //saddle
         } else if (i == 0)
         {
-            return itemstack.getItem() == Items.saddle;
+            return itemstack.getItem() == Items.SADDLE;
 
             //armor
         } else if (i == 1 && horse.getHorseType() == 0)

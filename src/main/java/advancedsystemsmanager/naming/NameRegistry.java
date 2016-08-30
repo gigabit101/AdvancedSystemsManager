@@ -17,7 +17,7 @@ public class NameRegistry
 
     public static String getSavedName(World world, int x, int y, int z)
     {
-        return getSavedName(world.provider.dimensionId, x, y, z);
+        return getSavedName(world.provider.getDimension(), x, y, z);
     }
 
     public static String getSavedName(int dim, int x, int y, int z)
@@ -28,13 +28,13 @@ public class NameRegistry
     public static void saveName(World world, int x, int y, int z, String name)
     {
         BlockCoord coord = new BlockCoord(x, y, z, name);
-        ASMPacket packet = getSavePacket(world.provider.dimensionId, coord);
+        ASMPacket packet = getSavePacket(world.provider.getDimension(), coord);
         if (world.isRemote)
         {
             packet.sendServerPacket();
         } else
         {
-            nameData.put(coord, world.provider.dimensionId);
+            nameData.put(coord, world.provider.getDimension());
             packet.sendToAll();
         }
     }
@@ -50,14 +50,14 @@ public class NameRegistry
 
     public static boolean removeName(World world, int x, int y, int z)
     {
-        if (!nameData.contains(world.provider.dimensionId, x, y, z)) return false;
-        ASMPacket packet = getRemovePacket(world.provider.dimensionId, x, y, z);
+        if (!nameData.contains(world.provider.getDimension(), x, y, z)) return false;
+        ASMPacket packet = getRemovePacket(world.provider.getDimension(), x, y, z);
         if (world.isRemote)
         {
             packet.sendServerPacket();
         } else
         {
-            nameData.remove(world.provider.dimensionId, x, y, z);
+            nameData.remove(world.provider.getDimension(), x, y, z);
             packet.sendToAll();
         }
         return true;

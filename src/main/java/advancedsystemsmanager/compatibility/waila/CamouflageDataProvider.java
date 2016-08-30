@@ -3,8 +3,6 @@ package advancedsystemsmanager.compatibility.waila;
 import advancedsystemsmanager.registry.BlockRegistry;
 import advancedsystemsmanager.registry.ClusterRegistry;
 import advancedsystemsmanager.tileentities.TileEntityCamouflage;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
@@ -16,7 +14,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,18 +57,18 @@ public class CamouflageDataProvider implements IWailaDataProvider
         TileEntity te = accessor.getTileEntity();
         if (te != null && isShiftNotDown())
         {
-            TileEntityCamouflage camouflage = ClusterRegistry.CAMO.getTileEntity(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord);
+            TileEntityCamouflage camouflage = ClusterRegistry.CAMO.getTileEntity(te.getWorld(), te.getPos());
             if (camouflage != null && camouflage.hasSideBlock(0))
             {
                 Block block = camouflage.getSideBlock(0);
                 if (block != null)
                 {
                     int meta = camouflage.getSideMetadata(0);
-                    return new ItemStack(block, 1, block.damageDropped(meta));
+                    return new ItemStack(block, 1, block.damageDropped(accessor.getBlockState()));
                 }
             }
         }
-        return new ItemStack(accessor.getBlock(), 1, accessor.getBlock().damageDropped(accessor.getMetadata()));
+        return new ItemStack(accessor.getBlock(), 1, accessor.getBlock().damageDropped(accessor.getBlockState()));
     }
 
     @SideOnly(Side.CLIENT)
@@ -82,7 +83,7 @@ public class CamouflageDataProvider implements IWailaDataProvider
         TileEntity te = accessor.getTileEntity();
         if (accessor instanceof DataAccessorCommon && te != null && isShiftNotDown())
         {
-            TileEntityCamouflage camouflage = ClusterRegistry.CAMO.getTileEntity(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord);
+            TileEntityCamouflage camouflage = ClusterRegistry.CAMO.getTileEntity(te.getWorld(), te.getPos());
             if (camouflage != null && camouflage.hasSideBlock(0))
             {
                 ((DataAccessorCommon) accessor).block = camouflage.getSideBlock(0);
@@ -108,7 +109,7 @@ public class CamouflageDataProvider implements IWailaDataProvider
         TileEntity te = accessor.getTileEntity();
         if (accessor instanceof DataAccessorCommon && te != null && isShiftNotDown())
         {
-            TileEntityCamouflage camouflage = ClusterRegistry.CAMO.getTileEntity(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord);
+            TileEntityCamouflage camouflage = ClusterRegistry.CAMO.getTileEntity(te.getWorld(), te.getPos());
             if (camouflage != null && camouflage.hasSideBlock(0))
             {
                 ((DataAccessorCommon) accessor).block = camouflage.getSideBlock(0);
@@ -134,7 +135,7 @@ public class CamouflageDataProvider implements IWailaDataProvider
         TileEntity te = accessor.getTileEntity();
         if (accessor instanceof DataAccessorCommon && te != null && isShiftNotDown())
         {
-            TileEntityCamouflage camouflage = ClusterRegistry.CAMO.getTileEntity(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord);
+            TileEntityCamouflage camouflage = ClusterRegistry.CAMO.getTileEntity(te.getWorld(), te.getPos());
             if (camouflage != null && camouflage.hasSideBlock(0))
             {
                 ((DataAccessorCommon) accessor).block = camouflage.getSideBlock(0);
@@ -155,8 +156,7 @@ public class CamouflageDataProvider implements IWailaDataProvider
     }
 
     @Override
-    public NBTTagCompound getNBTData(EntityPlayerMP entityPlayerMP, TileEntity tileEntity, NBTTagCompound nbtTagCompound, World world, int i, int i1, int i2)
-    {
+    public NBTTagCompound getNBTData(EntityPlayerMP entityPlayerMP, TileEntity tileEntity, NBTTagCompound nbtTagCompound, World world, BlockPos blockPos) {
         return null;
     }
 }

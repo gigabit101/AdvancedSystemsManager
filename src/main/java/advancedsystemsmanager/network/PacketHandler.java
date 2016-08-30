@@ -8,14 +8,14 @@ import advancedsystemsmanager.flow.menus.Menu;
 import advancedsystemsmanager.containers.ContainerBase;
 import advancedsystemsmanager.containers.ContainerManager;
 import advancedsystemsmanager.registry.FactoryMappingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketHandler
 {
@@ -33,7 +33,7 @@ public class PacketHandler
     public static final int NAME = 3;
     public static final int ON_JOIN = 4;
 
-    public static void sendAllData(Container container, ICrafting crafting, ITileInterfaceProvider te)
+    public static void sendAllData(Container container, IContainerListener crafting, ITileInterfaceProvider te)
     {
         ASMPacket packet = new ASMPacket();
 
@@ -44,7 +44,7 @@ public class PacketHandler
         sendDataToPlayer(crafting, packet);
     }
 
-    public static void sendDataToPlayer(ICrafting crafting, ASMPacket packet)
+    public static void sendDataToPlayer(IContainerListener crafting, ASMPacket packet)
     {
         if (crafting instanceof EntityPlayerMP)
         {
@@ -128,7 +128,7 @@ public class PacketHandler
                 packet.sendPlayerPacket((EntityPlayerMP)player);
             } else
             {
-                packet.sendPlayerPackets(te.xCoord + 0.5, te.yCoord + 0.5, te.zCoord + 0.5, BLOCK_UPDATE_RANGE, te.getWorldObj().provider.dimensionId);
+                packet.sendPlayerPackets(te.getPos().getX() + 0.5, te.getPos().getY() + 0.5, te.getPos().getZ() + 0.5, BLOCK_UPDATE_RANGE, te.getWorld().provider.getDimension());
             }
         }
     }
@@ -137,9 +137,9 @@ public class PacketHandler
     {
         ASMPacket packet = new ASMPacket(20);
         packet.writeByte(BLOCK);
-        packet.writeInt(te.xCoord);
-        packet.writeByte(te.yCoord);
-        packet.writeInt(te.zCoord);
+        packet.writeInt(te.getPos().getX());
+        packet.writeByte(te.getPos().getY());
+        packet.writeInt(te.getPos().getZ());
         packet.writeByte(id);
 
         block.writeData(packet, id);

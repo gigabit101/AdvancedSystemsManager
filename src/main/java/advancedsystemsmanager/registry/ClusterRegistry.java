@@ -8,17 +8,16 @@ import advancedsystemsmanager.helpers.LocalizationHelper;
 import advancedsystemsmanager.reference.Names;
 import advancedsystemsmanager.tileentities.*;
 import advancedsystemsmanager.tileentities.manager.TileEntityManager;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Collection;
 import java.util.List;
@@ -53,12 +52,12 @@ public class ClusterRegistry
             return 2f;
         }
 
-        @Override
-        @SideOnly(Side.CLIENT)
-        public IIcon getIcon(int side, int subtype)
-        {
-            return super.icons[0][side == 0 ? 2 : side == 1 ? 1 : 0];
-        }
+//        @Override
+//        @SideOnly(Side.CLIENT)
+//        public IIcon getIcon(int side, int subtype)
+//        {
+//            return super.icons[0][side == 0 ? 2 : side == 1 ? 1 : 0];
+//        }
 
         @Override
         @SideOnly(Side.CLIENT)
@@ -78,8 +77,9 @@ public class ClusterRegistry
     public static TileFactory CAMO = registerClusterElement(TileEntityCamouflage.class, new String[]{CABLE_CAMO, CABLE_CAMO_INSIDE, CABLE_CAMO_TRANSFORM});
     public static TileFactory CLUSTER = registerFactory(new TileFactory(TileEntityCluster.class, new String[]{CABLE_CLUSTER, CABLE_CLUSTER + ADVANCED_SUFFIX}, SIDE_SUFFIX)
     {
+
         @Override
-        public boolean canPlaceBlock(World world, int x, int y, int z, ItemStack stack)
+        public boolean canPlaceBlock(World world, BlockPos pos, ItemStack stack)
         {
             return TileEntityCluster.hasSubBlocks(stack);
         }
@@ -166,7 +166,7 @@ public class ClusterRegistry
         }
 
         @Override
-        public boolean canPlaceBlock(World world, int x, int y, int z, ItemStack stack)
+        public boolean canPlaceBlock(World world, BlockPos pos, ItemStack stack)
         {
             return stack.hasTagCompound() && stack.getTagCompound().hasKey(TileEntityQuantumCable.NBT_QUANTUM_KEY);
         }
@@ -219,9 +219,9 @@ public class ClusterRegistry
         return registry.values();
     }
 
-    @SideOnly(Side.CLIENT)
-    public static void registerIcons(IIconRegister register)
-    {
-        for (ITileFactory factory : getFactories()) factory.registerIcons(register);
-    }
+//    @SideOnly(Side.CLIENT)
+//    public static void registerIcons(IIconRegister register)
+//    {
+//        for (ITileFactory factory : getFactories()) factory.registerIcons(register);
+//    }
 }
