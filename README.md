@@ -1,4 +1,6 @@
 Advanced Systems Manager
+
+New Repo new versions new mod https://github.com/gigabit101/AdvancedSystemManager2
 =========
 A large rewrite and update of Vswe's Steve's Factory Manager Mod.
 
